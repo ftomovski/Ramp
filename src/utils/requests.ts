@@ -2,7 +2,12 @@ import { Transaction } from "./types"
 import { InputCheckbox } from "../components/InputCheckbox"
 
 export const transactionToRow = (transaction: Transaction, toggleTransactionApproval) => ({
-  ...transaction,
+  id: transaction.id,
+  merchant: transaction.merchant,
+  employee: transaction.employee,
+  amount: transaction.amount,
+  status: transaction.status,
+  receipt: transaction.receipt,
   approve: (
     <InputCheckbox
       id={transaction.id}
