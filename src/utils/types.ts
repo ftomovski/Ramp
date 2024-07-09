@@ -1,32 +1,26 @@
 export type Transaction = {
   id: string
-  amount: number
-  employee: Employee
   merchant: string
-  date: string
+  employee: string
+  amount: string
+  status: string
+  receipt: string
   approved: boolean
 }
 
-export type Employee = {
+export type TransactionFilters = {
+  employeeId?: string
+  status?: string
+}
+
+export type TransactionsFilterOption = {
+  label: string
+  value: string
+}
+
+export type InputCheckboxComponent = (props: {
   id: string
-  firstName: string
-  lastName: string
-}
-
-export type PaginatedResponse<TData> = {
-  data: TData
-  nextPage: number | null
-}
-
-export type PaginatedRequestParams = {
-  page: number | null
-}
-
-export type RequestByEmployeeParams = {
-  employeeId: string
-}
-
-export type SetTransactionApprovalParams = {
-  transactionId: string
-  value: boolean
-}
+  checked: boolean
+  disabled?: boolean
+  onChange: (checked: boolean) => void
+}) => JSX.Element

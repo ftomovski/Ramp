@@ -1,29 +1,27 @@
-import { useMemo } from "react";
-import { Button, Table, PageLoader, InputSelect } from "@components";
-import { useTransactionsContext, useEmployeesContext } from "@contexts";
-import { transactionToRow } from "@utils";
-import { TransactionFilters, TransactionsFilterOption } from "@types";
+import { useMemo } from "react"
+import { Button, Table, PageLoader, InputSelect } from "../components"
+import { useTransactionsByEmployee, useEmployeesContext } from "../../hooks"
+import { transactionToRow } from "../../utils/requests"
+import { TransactionFilters, TransactionsFilterOption } from "../../utils/types"
 
 type TransactionPaneProps = {
-  filter: TransactionFilters;
-  onFilterChange: (newFilter: TransactionFilters) => void;
-};
+  filter: TransactionFilters
+  onFilterChange: (newFilter: TransactionFilters) => void
+}
 
 export function TransactionPane({ filter, onFilterChange }: TransactionPaneProps) {
-  const { transactions, toggleTransactionApproval, isLoading, fetchMoreTransactions } = useTransactionsContext();
-  const { employees, isLoading: isLoadingEmployees } = useEmployeesContext();
+  const { transactions, toggleTransactionApproval, loading, fetchMoreTransactions } =
+    useTransactionsByEmployee(filter.employeeId)
+  const { employees, loading: isLoadingEmployees } = useEmployeesContext()
 
   const filterOptions = useMemo<TransactionsFilterOption[]>(() => {
     const employeeOptions = employees.map((employee) => ({
       label: employee.name,
       value: employee.id,
-    }));
+    }))
 
-    return [
-      { label: "All Employees", value: "all" },
-      ...employeeOptions,
-    ];
-  }, [employees]);
+    return [{ label: "All Employees", value: "all" }, ...employeeOptions]
+  }, [employees])
 
   return (
     <div className="RampGrid--container">
@@ -47,13 +45,15 @@ export function TransactionPane({ filter, onFilterChange }: TransactionPaneProps
             { label: "Receipt", field: "receipt" },
             { label: "Approve", field: "approve" },
           ]}
-          data={transactions.map(transaction => transactionToRow(transaction, toggleTransactionApproval))}
-          isLoading={isLoading}
+          data={transactions.map((transaction) =>
+            transactionToRow(transaction, toggleTransactionApproval)
+          )}
+          isLoading={loading}
         />
       </div>
       <div className="RampGrid--item RampGrid--item-12">
         <Button onClick={fetchMoreTransactions}>View More</Button>
       </div>
     </div>
-  );
+  )
 }
