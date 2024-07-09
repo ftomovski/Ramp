@@ -1,4 +1,4 @@
-import { Transaction } from "../utils/types"
+import { Transaction } from "./types"
 import { InputCheckbox } from "../components/InputCheckbox"
 
 export const transactionToRow = (transaction: Transaction, toggleTransactionApproval) => ({

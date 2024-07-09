@@ -1,34 +1,28 @@
-import { useCallback, useState } from "react"
-import { PaginatedRequestParams, PaginatedResponse, Transaction } from "../utils/types"
-import { PaginatedTransactionsResult } from "./types"
-import { useCustomFetch } from "./useCustomFetch"
+import { useState, useEffect } from "react"
+import { fetchPaginatedTransactions } from "../utils/requests"
+import { Transaction } from "../utils/types"
 
-export function usePaginatedTransactions(): PaginatedTransactionsResult {
-  const { fetchWithCache, loading } = useCustomFetch()
-  const [paginatedTransactions, setPaginatedTransactions] = useState<PaginatedResponse<
-    Transaction[]
-  > | null>(null)
+export const usePaginatedTransactions = () => {
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const fetchAll = useCallback(async () => {
-    const response = await fetchWithCache<PaginatedResponse<Transaction[]>, PaginatedRequestParams>(
-      "paginatedTransactions",
-      {
-        page: paginatedTransactions === null ? 0 : paginatedTransactions.nextPage,
-      }
-    )
+  useEffect(() => {
+    const loadTransactions = async () => {
+      setLoading(true)
+      const newTransactions = await fetchPaginatedTransactions()
+      setTransactions(newTransactions)
+      setLoading(false)
+    }
 
-    setPaginatedTransactions((previousResponse) => {
-      if (response === null || previousResponse === null) {
-        return response
-      }
-
-      return { data: response.data, nextPage: response.nextPage }
-    })
-  }, [fetchWithCache, paginatedTransactions])
-
-  const invalidateData = useCallback(() => {
-    setPaginatedTransactions(null)
+    loadTransactions()
   }, [])
 
-  return { data: paginatedTransactions, loading, fetchAll, invalidateData }
+  const fetchMoreTransactions = async () => {
+    setLoading(true)
+    const newTransactions = await fetchPaginatedTransactions()
+    setTransactions((prevTransactions) => [...prevTransactions, ...newTransactions])
+    setLoading(false)
+  }
+
+  return { transactions, loading, fetchMoreTransactions }
 }
