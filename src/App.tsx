@@ -43,6 +43,8 @@ export function App() {
     }
   }, [employeeUtils.loading, employees, loadAllTransactions])
 
+  const employeeItems = employees ? [EMPTY_EMPLOYEE, ...employees] : [EMPTY_EMPLOYEE]
+
   return (
     <Fragment>
       <main className="MainContainer">
@@ -53,7 +55,7 @@ export function App() {
         <InputSelect<Employee>
           isLoading={isLoading}
           defaultValue={EMPTY_EMPLOYEE}
-          items={employees === null ? [] : [EMPTY_EMPLOYEE, ...employees]}
+          items={employeeItems}
           label="Filter by employee"
           loadingLabel="Loading employees"
           parseItem={(item) => ({
