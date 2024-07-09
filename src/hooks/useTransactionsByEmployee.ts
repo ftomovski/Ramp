@@ -17,6 +17,13 @@ export const useTransactionsByEmployee = (employeeId: string | null) => {
     loadTransactions()
   }, [employeeId])
 
+  const fetchById = async (id: string) => {
+    setLoading(true)
+    const newTransactions = await fetchTransactionsByEmployee(id)
+    setTransactions(newTransactions)
+    setLoading(false)
+  }
+
   const toggleTransactionApproval = (id: string, approved: boolean) => {
     setTransactions((prevTransactions) =>
       prevTransactions.map((transaction) =>
@@ -28,6 +35,7 @@ export const useTransactionsByEmployee = (employeeId: string | null) => {
   return {
     data: transactions,
     loading,
+    fetchById,
     toggleTransactionApproval,
     invalidateData: () => setTransactions([]),
   }

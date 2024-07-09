@@ -17,6 +17,13 @@ export const usePaginatedTransactions = () => {
     loadTransactions()
   }, [])
 
+  const fetchAll = async () => {
+    setLoading(true)
+    const newTransactions = await fetchPaginatedTransactions()
+    setTransactions(newTransactions)
+    setLoading(false)
+  }
+
   const fetchMoreTransactions = async () => {
     setLoading(true)
     const newTransactions = await fetchPaginatedTransactions()
@@ -27,6 +34,7 @@ export const usePaginatedTransactions = () => {
   return {
     data: transactions,
     loading,
+    fetchAll,
     fetchMoreTransactions,
     invalidateData: () => setTransactions([]),
   }
