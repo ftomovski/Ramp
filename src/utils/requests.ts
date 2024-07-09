@@ -10,6 +10,7 @@ export const transactionToRow = (transaction: Transaction, toggleTransactionAppr
   receipt: transaction.receipt,
   approve: (
     <InputCheckbox
+      key={transaction.id}
       id={transaction.id}
       checked={transaction.approved}
       onChange={(checked) => toggleTransactionApproval(transaction.id, checked)}
