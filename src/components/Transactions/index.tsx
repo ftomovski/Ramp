@@ -3,7 +3,7 @@ import { Transaction } from "../../utils/types"
 import { InputCheckbox } from "../InputCheckbox"
 
 const Transactions = ({ transactions }) => {
-  const [localTransactions, setLocalTransactions] = useState<Transaction[]>(transactions)
+  const [localTransactions, setLocalTransactions] = useState<Transaction[]>(transactions || [])
 
   const toggleApproval = (id: string, approved: boolean) => {
     setLocalTransactions((prevTransactions) =>
@@ -14,7 +14,7 @@ const Transactions = ({ transactions }) => {
   }
 
   useEffect(() => {
-    setLocalTransactions(transactions)
+    setLocalTransactions(transactions || [])
   }, [transactions])
 
   return (

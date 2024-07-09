@@ -15,5 +15,5 @@ export const useEmployees = () => {
     loadEmployees()
   }, [])
 
-  return { employees, loading }
+  return { data: employees, loading }
 }

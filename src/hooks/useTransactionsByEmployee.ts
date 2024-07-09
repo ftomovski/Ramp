@@ -25,5 +25,10 @@ export const useTransactionsByEmployee = (employeeId: string | null) => {
     )
   }
 
-  return { transactions, loading, toggleTransactionApproval }
+  return {
+    data: transactions,
+    loading,
+    toggleTransactionApproval,
+    invalidateData: () => setTransactions([]),
+  }
 }

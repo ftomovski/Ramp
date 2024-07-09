@@ -1,5 +1,5 @@
 import Downshift from "downshift"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import classNames from "classnames"
 import { DropdownPosition, GetDropdownPositionFn, InputSelectOnChange, InputSelectProps } from "./types"
 
@@ -33,21 +33,11 @@ export function InputSelect<TItem>({
     [consumerOnChange]
   )
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (inputRef.current) {
-        setDropdownPosition(getDropdownPosition(inputRef.current))
-      }
+  const handleScroll = () => {
+    if (inputRef.current) {
+      setDropdownPosition(getDropdownPosition(inputRef.current))
     }
-
-    window.addEventListener("scroll", handleScroll)
-    window.addEventListener("resize", handleScroll)
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-      window.removeEventListener("resize", handleScroll)
-    }
-  }, [])
+  }
 
   return (
     <Downshift<TItem>
@@ -69,11 +59,9 @@ export function InputSelect<TItem>({
         const toggleProps = getToggleButtonProps()
         const parsedSelectedItem = selectedItem === null ? null : parseItem(selectedItem)
 
-        useEffect(() => {
-          if (isOpen && inputRef.current) {
-            setDropdownPosition(getDropdownPosition(inputRef.current))
-          }
-        }, [isOpen])
+        if (isOpen && inputRef.current) {
+          setDropdownPosition(getDropdownPosition(inputRef.current))
+        }
 
         return (
           <div className="RampInputSelect--root">

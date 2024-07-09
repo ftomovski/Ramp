@@ -24,5 +24,10 @@ export const usePaginatedTransactions = () => {
     setLoading(false)
   }
 
-  return { transactions, loading, fetchMoreTransactions }
+  return {
+    data: transactions,
+    loading,
+    fetchMoreTransactions,
+    invalidateData: () => setTransactions([]),
+  }
 }
