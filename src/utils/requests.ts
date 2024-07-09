@@ -1,25 +1,63 @@
-import React from "react" // Ensure React is imported
-import { Transaction } from "./types"
-import { InputCheckbox } from "../components/InputCheckbox"
+import { Transaction, Employee } from "./types"
 
-export const transactionToRow = (
-  transaction: Transaction,
-  toggleTransactionApproval: (id: string, approved: boolean) => void
-) => {
-  const approveComponent = React.createElement(InputCheckbox, {
-    key: transaction.id,
-    id: transaction.id,
-    checked: transaction.approved,
-    onChange: (checked) => toggleTransactionApproval(transaction.id, checked),
-  })
+// Simulated API request for employees
+export const fetchEmployees = async (): Promise<Employee[]> => {
+  // Simulate a delay
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  return [
+    { id: "1", firstName: "John", lastName: "Doe" },
+    { id: "2", firstName: "Jane", lastName: "Smith" },
+  ]
+}
 
-  return {
-    id: transaction.id,
-    merchant: transaction.merchant,
-    employee: transaction.employee,
-    amount: transaction.amount,
-    status: transaction.status,
-    receipt: transaction.receipt,
-    approve: approveComponent,
-  }
+// Simulated API request for paginated transactions
+export const fetchPaginatedTransactions = async (): Promise<Transaction[]> => {
+  // Simulate a delay
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  return [
+    {
+      id: "1",
+      merchant: "Amazon",
+      employee: "John Doe",
+      amount: "$100",
+      status: "Completed",
+      receipt: "Receipt1",
+      approved: false,
+    },
+    {
+      id: "2",
+      merchant: "Apple",
+      employee: "Jane Smith",
+      amount: "$200",
+      status: "Pending",
+      receipt: "Receipt2",
+      approved: true,
+    },
+  ]
+}
+
+// Simulated API request for transactions by employee
+export const fetchTransactionsByEmployee = async (employeeId: string): Promise<Transaction[]> => {
+  // Simulate a delay
+  await new Promise((resolve) => setTimeout(resolve, 1000))
+  return [
+    {
+      id: "1",
+      merchant: "Amazon",
+      employee: "John Doe",
+      amount: "$100",
+      status: "Completed",
+      receipt: "Receipt1",
+      approved: false,
+    },
+    {
+      id: "2",
+      merchant: "Apple",
+      employee: "John Doe",
+      amount: "$200",
+      status: "Pending",
+      receipt: "Receipt2",
+      approved: true,
+    },
+  ]
 }
